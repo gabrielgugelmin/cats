@@ -10,7 +10,7 @@ connect = async () => {
     database: "cats",
   });
 
-  console.log("Conectou no MySQL!");
+  console.log("Connected to MySQL");
 
   global.connection = connection;
   return connection;

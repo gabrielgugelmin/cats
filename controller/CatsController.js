@@ -29,6 +29,15 @@ module.exports = {
 
     res.status(HTTP_ERROR.SUCCESS).json(response);
   },
+  getCatsToAdopt: async (req, res, callback) => {
+    const response = await CatsRepository.getCatsToAdopt();
+    if (!response || response.length === 0)
+      return res.status(HTTP_ERROR.NOT_FOUND).json({
+        message: "Todos os gatos já foram adotados!",
+      });
+
+    res.status(HTTP_ERROR.SUCCESS).json(response);
+  },
   getTotalWeight: async (req, res, callback) => {
     const { total } = await CatsRepository.getTotalWeight();
     res.status(HTTP_ERROR.SUCCESS).json(parseInt(total));

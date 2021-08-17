@@ -14,22 +14,24 @@ class peopleRepository {
     return rows;
   };
 
-  add = async people => {
+  add = async ({ name, age }) => {
     const sql = "INSERT INTO people(name, age) VALUES (?, ?);";
-    const values = [people.name, people.age];
-    const respose = await this.conn.query(sql, values);
-    return respose.affectedRows;
+    const values = [name, age];
+    const [response] = await this.conn.query(sql, values);
+    return response;
   };
 
-  remove = async ({ id }) => {
+  remove = async id => {
     const sql = "DELETE FROM people where id=?;";
     const [response] = await this.conn.query(sql, [id]);
     return response.affectedRows;
   };
 
   edit = async ({ id, name, age, catId }) => {
-    const sql = "UPDATE people SET name=?, age=?, fk_cat_id=? WHERE id=?";
-    const values = [name, age, catId, id];
+    const sql = `UPDATE people SET name=?, age=? ${
+      catId ? ", fk_cat_id=?" : ""
+    } WHERE id=?`;
+    const values = catId ? [name, age, catId, id] : [name, age, id];
     const [response] = await this.conn.query(sql, values);
     return response.affectedRows;
   };

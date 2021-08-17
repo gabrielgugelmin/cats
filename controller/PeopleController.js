@@ -13,16 +13,14 @@ module.exports = {
     res.status(HTTP_ERROR.SUCCESS).json(response);
   },
   add: async (req, res, callback) => {
-    const { name, color, weight } = req.body;
+    const { name, age } = req.body;
 
-    if (!name || !color || !weight)
+    if (!name || !age)
       return res.status(HTTP_ERROR.BAD_REQUEST).json({
-        message: "Os campos name, color e weight são obrigatórios",
+        message: "Os campos name e age são obrigatórios",
       });
 
-    const cat = { name, color, weight };
-
-    const response = await PeopleRepository.add(cat);
+    const response = await PeopleRepository.add({ name, age });
     const { affectedRows } = response;
 
     res
@@ -50,14 +48,14 @@ module.exports = {
   },
   edit: async (req, res, callback) => {
     const { id } = req.params;
-    const { name, color, weight } = req.body;
+    const { name, age, catId } = req.body;
 
-    if (!id)
+    if (!id || !name || !age)
       return res.status(HTTP_ERROR.BAD_REQUEST).json({
-        message: "Id é obrigatório",
+        message: "Os campos id, name, age são obrigatórios",
       });
 
-    const response = await PeopleRepository.edit({ id, name, color, weight });
+    const response = await PeopleRepository.edit({ id, name, age, catId });
 
     res
       .status(response === 0 ? HTTP_ERROR.NOT_FOUND : HTTP_ERROR.SUCCESS)

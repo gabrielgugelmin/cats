@@ -21,6 +21,13 @@ class CatsRepository {
     return rows;
   };
 
+  getCatsToAdopt = async () => {
+    const [rows] = await this.conn.query(
+      `select * from cats c left join people p ON c.id = p.fk_cat_id where p.id is null;`
+    );
+    return rows;
+  };
+
   getTotalWeight = async () => {
     const [rows] = await this.conn.query(
       `SELECT SUM(cats.weight) as total FROM cats;`
